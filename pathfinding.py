@@ -12,16 +12,21 @@ def findend(maze):
             if maze[i][j] == 99:
                 return i, j
 
-def findpath(maze, x=None, y=None,history=None):
+def findpath(maze, x=None, y=None,history=None,prevScore=None):
     distance = 0
     if x is None and y is None:
         y, x = findstart(maze)
     if history is None:
         history = []
+    if prevScore is None:
+        prevScore = 0
     path = []  # Variable to store the final path
     if backtrack(maze, x, y, path, history):
         path.reverse()  # Reverse the path to get the correct order
-        return path, history, 1000-len(path)
+        score = 1000-len(path)
+        if score < prevScore:
+            return None,None,None
+        return path, history, score
     else:
         return [], history, 0
 
