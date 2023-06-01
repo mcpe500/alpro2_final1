@@ -24,10 +24,6 @@ def findpath(maze, x=None, y=None):
         return []
 
 def backtrack(maze, x, y, path):
-    time.sleep(1)
-    visualize.clear()
-    visualize.drawMaze(maze,32)
-    visualize.stop()
     if maze[y][x] == 99:
         return True
 
@@ -39,6 +35,10 @@ def backtrack(maze, x, y, path):
         new_x = x + move[0]
         new_y = y + move[1]
         if backtrack(maze, new_x, new_y, path):
+            time.sleep(1)
+            visualize.drawMaze(maze,32)
+            path.append(move)
+            visualize.stop()
             return True
     return False
 

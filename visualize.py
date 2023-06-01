@@ -4,6 +4,7 @@ turtle.addshape("Wall.gif")
 turtle.addshape("stonefloor.gif")
 turtle.addshape("bestpath.gif")
 turtle.addshape("pathed.gif")
+turtle.addshape("start.gif")
 turtle.addshape("exit.gif")
 
 p = turtle.Turtle()
@@ -38,7 +39,7 @@ def drawMaze(maze, size):
                 p.shape("bestpath.gif")
             elif maze[i][j] == 10:
                 print("start")
-                p.color("green")
+                p.shape("start.gif")
             elif maze[i][j] == 99:
                 print("end")
                 p.shape("exit.gif")
