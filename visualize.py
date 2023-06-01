@@ -1,4 +1,5 @@
 import turtle
+import time
 
 turtle.addshape("Wall.gif")
 turtle.addshape("stonefloor.gif")
@@ -58,3 +59,11 @@ def update():
 
 def stop():
     turtle.done()
+
+def animate(history):
+    for maze in history:
+        clear()
+        drawMaze(maze, 32)
+        update()
+        time.sleep(0.1)
+    stop()

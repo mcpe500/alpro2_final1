@@ -1,5 +1,4 @@
-import time
-import visualize
+import copy
 
 def findstart(maze):
     for i in range(len(maze)):
@@ -12,18 +11,19 @@ def findend(maze):
             if maze[i][j] == 99:
                 return i, j
 
-def findpath(maze, x=None, y=None):
+def findpath(maze, x=None, y=None,history=None):
     if x is None and y is None:
         y, x = findstart(maze)
-
+    if history is None:
+        history = []
     path = []  # Variable to store the final path
-    if backtrack(maze, x, y, path):
+    if backtrack(maze, x, y, path,history):
         path.reverse()  # Reverse the path to get the correct order
-        return path
+        return path,history
     else:
-        return []
+        return [],history
 
-def backtrack(maze, x, y, path):
+def backtrack(maze, x, y, path,history):
     if maze[y][x] == 99:
         return True
 
@@ -34,11 +34,9 @@ def backtrack(maze, x, y, path):
     for move in possible_moves:
         new_x = x + move[0]
         new_y = y + move[1]
-        if backtrack(maze, new_x, new_y, path):
-            time.sleep(1)
-            visualize.drawMaze(maze,32)
+        history.append(copy.deepcopy(maze))
+        if backtrack(maze, new_x, new_y, path,history):
             path.append(move)
-            visualize.stop()
             return True
     return False
 
