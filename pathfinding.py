@@ -29,8 +29,7 @@ def findpath(maze,x=None,y=None,path=None):
                 maze[y][x] = 3
             path.append(move)
             findpath(maze,x+move[0],y+move[1],path)
-            return 
-        
+    return path
 
 def finalMaze(maze,path):
     print(path)
