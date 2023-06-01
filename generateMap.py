@@ -15,7 +15,6 @@ def isAllVisited(visited):
 
 def isStuck(visited, yx, wall):
     temp = visited.copy()
-    # print("stuck")
     for i in wall:
         if (yx[0] + i[0] < 0 or yx[0] + i[0] >= len(visited) or yx[1] + i[1] < 0 or yx[1] + i[1] >= len(visited[0])):
             continue

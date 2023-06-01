@@ -10,6 +10,6 @@ map = pathfinding.finalMaze(map,path)
 for i in map:
     print(i)
 import visualize
-visualize.drawMaze(map,10)
+visualize.drawMaze(map,8)
 
 
