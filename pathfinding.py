@@ -1,4 +1,5 @@
 import copy
+import random
 
 def findstart(maze):
     for i in range(len(maze)):
@@ -12,18 +13,19 @@ def findend(maze):
                 return i, j
 
 def findpath(maze, x=None, y=None,history=None):
+    distance = 0
     if x is None and y is None:
         y, x = findstart(maze)
     if history is None:
         history = []
     path = []  # Variable to store the final path
-    if backtrack(maze, x, y, path,history):
+    if backtrack(maze, x, y, path, history):
         path.reverse()  # Reverse the path to get the correct order
-        return path,history
+        return path, history, 1000-len(path)
     else:
-        return [],history
+        return [], history, 0
 
-def backtrack(maze, x, y, path,history):
+def backtrack(maze, x, y, path, history):
     if maze[y][x] == 99:
         return True
 
@@ -31,11 +33,12 @@ def backtrack(maze, x, y, path,history):
         maze[y][x] = 3  # Mark the current square as visited
 
     possible_moves = get_possible_moves(maze, x, y)
+    random.shuffle(possible_moves)
     for move in possible_moves:
         new_x = x + move[0]
         new_y = y + move[1]
         history.append(copy.deepcopy(maze))
-        if backtrack(maze, new_x, new_y, path,history):
+        if backtrack(maze, new_x, new_y, path, history):
             path.append(move)
             return True
     return False
@@ -70,9 +73,8 @@ def get_possible_moves(maze, x, y):
 #     return maze
 
 def finalMaze(maze,path):
-    print(path)
+    # print(path)
     sY,sX = findstart(maze)
-    eY,eX = findend(maze)
     for index in range(len(path)):
         pX,pY = path[index]
         if maze[sY+pY][sX+pX] != 1 and maze[sY+pY][sX+pX] != 99:
