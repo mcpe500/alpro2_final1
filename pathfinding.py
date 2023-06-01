@@ -1,3 +1,6 @@
+import time
+import visualize
+
 def findstart(maze):
     for i in range(len(maze)):
         for j in range(len(maze[i])):
@@ -21,6 +24,10 @@ def findpath(maze, x=None, y=None):
         return []
 
 def backtrack(maze, x, y, path):
+    time.sleep(1)
+    visualize.clear()
+    visualize.drawMaze(maze,32)
+    visualize.stop()
     if maze[y][x] == 99:
         return True
 
@@ -32,9 +39,7 @@ def backtrack(maze, x, y, path):
         new_x = x + move[0]
         new_y = y + move[1]
         if backtrack(maze, new_x, new_y, path):
-            path.append(move)
             return True
-
     return False
 
 def get_possible_moves(maze, x, y):
