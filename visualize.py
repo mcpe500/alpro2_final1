@@ -7,6 +7,10 @@ turtle.addshape("bestpath.gif")
 turtle.addshape("pathed.gif")
 turtle.addshape("start.gif")
 turtle.addshape("exit.gif")
+turtle.addshape("beartrap.gif")
+turtle.addshape("lava.gif")
+turtle.addshape("pathed_beartrap.gif")
+turtle.addshape("bestpath_beartrap.gif")
 
 p = turtle.Turtle()
 
@@ -38,6 +42,18 @@ def drawMaze(maze, size):
             elif maze[i][j] == 4:
                 # print("bestpath")
                 p.shape("bestpath.gif")
+            elif maze[i][j] == 6:
+                # print("beartrap")
+                p.shape("beartrap.gif")
+            elif maze[i][j] == 7:
+                # print("lava")
+                p.shape("lava.gif")
+            elif maze[i][j] == 8:
+                # print("pathed_beartrap")
+                p.shape("pathed_beartrap.gif")
+            elif maze[i][j] == 9:
+                # print("bestpath_beartrap")
+                p.shape("bestpath_beartrap.gif")
             elif maze[i][j] == 10:
                 # print("start")
                 p.shape("start.gif")

@@ -83,7 +83,7 @@ def randomMap(maze, x, y,visited=None):
                 randomMap(maze, next_moveX, next_moveY,visited)
     return maze
     
-def newMaze(maze):
+def newMaze(maze, trapCount, lavaCount):
     nMaze = []
     for i in range(len(maze)):
         nMaze.append([])
@@ -101,6 +101,19 @@ def newMaze(maze):
             break
         else:
             y,x = random.randint(len(maze)//2,len(maze)-1),random.randint(len(maze[0])//2,len(maze[0])-1)
+
+    for i in range(0, trapCount):
+        y,x = random.randint(0,len(maze)-1),random.randint(0,len(maze[0])-1)
+        while nMaze[y][x] != 0:
+            y,x = random.randint(0,len(maze)-1),random.randint(0,len(maze[0])-1)
+        nMaze[y][x] = 6
+
+    for i in range(0, lavaCount):
+        y,x = random.randint(0,len(maze)-1),random.randint(0,len(maze[0])-1)
+        while nMaze[y][x] != 0:
+            y,x = random.randint(0,len(maze)-1),random.randint(0,len(maze[0])-1)
+        nMaze[y][x] = 7
+
     return nMaze
 
 # def randomMap(maze):

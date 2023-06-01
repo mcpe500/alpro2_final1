@@ -4,40 +4,31 @@ import pathfinding
 import copy
 
 map,state = read_file.readMap("map")
-result = {}
 map = generateMap.randomMap(map, 0, 0)
+
 if not state:
-    map = generateMap.newMaze(map)
-final_paths = None
-history = []
+    map = generateMap.newMaze(map, 15, 3)
+paths = []
+
+bestMap = copy.deepcopy(map)
 bestScore = 0
-bestScore2 = 0
-while True:
+for i in range(500):
     temp = copy.deepcopy(map)
-    pa,hs,sc = pathfinding.findpath(temp,prevScore=bestScore)
-    if sc == bestScore and bestScore == bestScore2:
-        break
-    if sc is not None:
-        bestScore2 = bestScore
-        if sc > bestScore:
-            bestScore = sc
-            final_paths = pa
-            history = hs
+    tempPath, tempHist, tempSc = pathfinding.findpath(temp)
+    if tempSc>=bestScore:
+        print(tempSc)
+        bestScore = tempSc
+        paths.append([tempPath, tempHist, tempSc])
+        bestMap = temp
 
-# index = -1
-# for i in range(len(paths)):
-#     path, history, score = paths[i]
-#     print(score)
-#     if (score>bestScore):
-#         bestScore = score
-#         index = i
+map = bestMap
+path, history, score = paths[len(paths)-1]
+print(score)
 
-# path, history, score = paths[index]
-print(bestScore)
 
 # path, history, score = pathfinding.findpath(map)
 
-map = pathfinding.finalMaze(map,final_paths)
+map = pathfinding.finalMaze(map,path)
 history.append(map)
 # for i in map:
 #     print(i)
@@ -46,5 +37,3 @@ history.append(map)
 #     print(i)
 import visualize
 visualize.animate(history)
-
-

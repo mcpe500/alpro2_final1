@@ -12,78 +12,65 @@ def findend(maze):
             if maze[i][j] == 99:
                 return i, j
 
-def findpath(maze, x=None, y=None,history=None,prevScore=None):
-    distance = 0
+def findpath(maze, x=None, y=None, history=None):
     if x is None and y is None:
         y, x = findstart(maze)
     if history is None:
         history = []
-    if prevScore is None:
-        prevScore = 0
     path = []  # Variable to store the final path
-    if backtrack(maze, x, y, path, history):
+    health = 0
+    isValid, health = backtrack(maze, x, y, path, 10, history)
+    if isValid:
         path.reverse()  # Reverse the path to get the correct order
-        score = 1000-len(path)
-        if score < prevScore:
-            return None,None,None
-        return path, history, score
+        return path, history, (1000-len(path))*health
     else:
         return [], history, 0
 
-def backtrack(maze, x, y, path, history):
+def backtrack(maze, x, y, path, health, history):
     if maze[y][x] == 99:
-        return True
+        return True, health
 
-    if maze[y][x] != 10 and maze[y][x] != 99:
+    if maze[y][x] == 0:
         maze[y][x] = 3  # Mark the current square as visited
+    elif maze[y][x] == 6:
+        maze[y][x] = 8
+        health -= 1
 
-    possible_moves = get_possible_moves(maze, x, y)
+    possible_moves = get_possible_moves(maze, x, y, health)
     random.shuffle(possible_moves)
     for move in possible_moves:
         new_x = x + move[0]
         new_y = y + move[1]
         history.append(copy.deepcopy(maze))
-        if backtrack(maze, new_x, new_y, path, history):
+        isValid, health = backtrack(maze, new_x, new_y, path, health, history)
+        if isValid:
             path.append(move)
-            return True
-    return False
+            return True, health
+    return False, health
 
-def get_possible_moves(maze, x, y):
+def get_possible_moves(maze, x, y, health):
     moves = []
-    if x > 0 and (maze[y][x-1] == 0 or maze[y][x-1] == 99):
+    if x > 0 and (maze[y][x-1] == 0 or (maze[y][x-1] == 6 and health-1>=0) or maze[y][x-1] == 99):
         moves.append((-1, 0))
-    if x < len(maze[0]) - 1 and (maze[y][x+1] == 0 or maze[y][x+1] == 99):
+    if x < len(maze[0]) - 1 and (maze[y][x+1] == 0 or (maze[y][x+1] == 6 and health-1>=0) or maze[y][x+1] == 99):
         moves.append((1, 0))
-    if y > 0 and (maze[y-1][x] == 0 or maze[y-1][x] == 99):
+    if y > 0 and (maze[y-1][x] == 0 or (maze[y-1][x] == 6 and health-1>=0) or maze[y-1][x] == 99):
         moves.append((0, -1))
-    if y < len(maze) - 1 and (maze[y+1][x] == 0 or maze[y+1][x] == 99):
+    if y < len(maze) - 1 and (maze[y+1][x] == 0 or (maze[y+1][x] == 6 and health-1>=0) or maze[y+1][x] == 99):
         moves.append((0, 1))
     return moves
-
-
-# def finalMaze(maze,path):
-#     print(path)
-#     sY,sX = findstart(maze)
-#     # eY,eX = findend(maze)
-#     index = len(path)-1
-#     while index >= 0:
-#         pX,pY = path[index]
-#         if maze[sY+pY][sX+pX] == 3:
-#             maze[sY+pY][sX+pX] = 4
-#             sY += pY
-#             sX += pX
-#         elif maze[sY+pY][sX+pX] == 99:
-#             return maze
-#         index -= 1
-#     return maze
 
 def finalMaze(maze,path):
     # print(path)
     sY,sX = findstart(maze)
     for index in range(len(path)):
         pX,pY = path[index]
-        if maze[sY+pY][sX+pX] != 1 and maze[sY+pY][sX+pX] != 99:
+        if maze[sY+pY][sX+pX] == 3:
             maze[sY+pY][sX+pX] = 4
+            sY += pY
+            sX += pX
+        elif maze[sY+pY][sX+pX] == 8:
+            maze[sY+pY][sX+pX] = 9
             sY += pY
             sX += pX
     return maze
