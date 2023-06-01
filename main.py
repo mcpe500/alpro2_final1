@@ -15,9 +15,10 @@ bestScore2 = 0
 while True:
     temp = copy.deepcopy(map)
     pa,hs,sc = pathfinding.findpath(temp,prevScore=bestScore)
-    if sc == bestScore:
+    if sc == bestScore and bestScore == bestScore2:
         break
     if sc is not None:
+        bestScore2 = bestScore
         if sc > bestScore:
             bestScore = sc
             final_paths = pa
