@@ -50,34 +50,6 @@ def get_possible_moves(maze, x, y):
     return moves
 
 
-# def findpath(maze,x=None,y=None,path=None, found=False):
-#     if x == None and y == None:
-#         y,x = findstart(maze)
-#     if path == None:
-#         path = []
-#     if maze[x][y] == 99 or found:
-#         found = True
-#         return path
-#     if maze[x][y] == 0:
-#         maze[x][y] = 3
-#     if validMove(maze, x-1, y):
-#         path.append((-1,0))
-#         findpath(maze, x-1, y, path, found)
-
-#     if validMove(maze, x+1, y):
-#         path.append((1,0))
-#         findpath(maze, x+1, y, path), found
-
-#     if validMove(maze, x, y-1):
-#         path.append((0,-1))
-#         findpath(maze, x, y-1, path, found)
-
-#     if validMove(maze, x, y+1):
-#         path.append((0,1))
-#         findpath(maze, x, y+1, path, found)
-
-#     return path
-
 # def finalMaze(maze,path):
 #     print(path)
 #     sY,sX = findstart(maze)
