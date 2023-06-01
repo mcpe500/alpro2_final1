@@ -27,22 +27,22 @@ def drawMaze(maze, size):
     for i in range(len(maze)):
         for j in range(len(maze[i])):
             if maze[i][j] == 0:
-                print("stonefloor")
+                # print("stonefloor")
                 p.shape("stonefloor.gif")
             elif maze[i][j] == 1:
-                print("wall")
+                # print("wall")
                 p.shape("Wall.gif")
             elif maze[i][j] == 3:
-                print("pathed")
+                # print("pathed")
                 p.shape("pathed.gif")
             elif maze[i][j] == 4:
-                print("bestpath")
+                # print("bestpath")
                 p.shape("bestpath.gif")
             elif maze[i][j] == 10:
-                print("start")
+                # print("start")
                 p.shape("start.gif")
             elif maze[i][j] == 99:
-                print("end")
+                # print("end")
                 p.shape("exit.gif")
             
             p.shapesize(stretch_wid=size/20, stretch_len=size/20)
@@ -65,5 +65,5 @@ def animate(history):
         clear()
         drawMaze(maze, 32)
         update()
-        time.sleep(0.1)
+        time.sleep(0.01)
     stop()
