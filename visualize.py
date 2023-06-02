@@ -1,5 +1,7 @@
 import turtle
 import time
+import winsound
+
 
 turtle.addshape("Wall.gif")
 turtle.addshape("stonefloor.gif")
@@ -19,7 +21,7 @@ def box(pen, size):
     pen.shapesize(0.01)  # adjust the size of the turtle shape based on the size of the maze cell
     pen.stamp()
 
-def drawMaze(maze, size):
+def drawMaze(maze, size, health, score):
     start_x = -((len(maze[0]) * size) / 2)
     start_y = (len(maze) * size) / 2
     p.penup()
@@ -27,6 +29,8 @@ def drawMaze(maze, size):
     p.speed(0)
     p.hideturtle()
     p.getscreen().tracer(0)
+    font_size = 16
+    font_style = ("Arial", font_size, "normal")
 
     for i in range(len(maze)):
         for j in range(len(maze[i])):
@@ -58,7 +62,7 @@ def drawMaze(maze, size):
                 # print("start")
                 p.shape("start.gif")
             elif maze[i][j] == 99:
-                # print("end")
+                # print("exit")
                 p.shape("exit.gif")
             
             p.shapesize(stretch_wid=size/20, stretch_len=size/20)
@@ -66,6 +70,19 @@ def drawMaze(maze, size):
             p.forward(size)
 
         p.setpos(start_x, start_y - (i+1)*size)
+
+    # Write health at top left
+    health_x = start_x - 15
+    health_y = start_y + size
+    p.goto(health_x, health_y)
+    p.write("Health: " + str(health), align="left", font=font_style)
+
+    # Write score at top right
+    score_x = start_x + len(maze[0]) * size - 15
+    score_y = start_y + size
+    p.goto(score_x, score_y)
+    p.write("Score: " + str(score), align="right", font=font_style)
+ 
 
 def clear():
     p.clear()
@@ -76,10 +93,13 @@ def update():
 def stop():
     turtle.done()
 
-def animate(history):
+def animate(history, health, score):
+    winsound.PlaySound("footsteps.wav", winsound.SND_FILENAME | winsound.SND_ASYNC | winsound.SND_LOOP)
     for maze in history:
         clear()
-        drawMaze(maze, 32)
+        drawMaze(maze, 32, health, score)
         update()
         time.sleep(0.01)
+    winsound.PlaySound(None, winsound.SND_PURGE)
+    winsound.PlaySound("Victory Music.wav", winsound.SND_FILENAME)
     stop()

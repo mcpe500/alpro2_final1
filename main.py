@@ -12,21 +12,18 @@ paths = []
 
 bestMap = copy.deepcopy(map)
 bestScore = 0
-for i in range(500):
+for i in range(1000):
     temp = copy.deepcopy(map)
-    tempPath, tempHist, tempSc = pathfinding.findpath(temp)
+    tempPath, tempHist, tempSc, tempHp = pathfinding.findpath(temp)
     if tempSc>=bestScore:
         print(tempSc)
         bestScore = tempSc
-        paths.append([tempPath, tempHist, tempSc])
+        paths.append([tempPath, tempHist, tempSc, tempHp])
         bestMap = temp
 
 map = bestMap
-path, history, score = paths[len(paths)-1]
+path, history, score, health = paths[len(paths)-1]
 print(score)
-
-
-# path, history, score = pathfinding.findpath(map)
 
 map = pathfinding.finalMaze(map,path)
 history.append(map)
@@ -36,4 +33,4 @@ history.append(map)
 # for i in history:
 #     print(i)
 import visualize
-visualize.animate(history)
+visualize.animate(history, health, score)

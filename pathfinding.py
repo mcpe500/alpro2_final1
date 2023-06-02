@@ -19,12 +19,15 @@ def findpath(maze, x=None, y=None, history=None):
         history = []
     path = []  # Variable to store the final path
     health = 0
+
     isValid, health = backtrack(maze, x, y, path, 10, history)
     if isValid:
         path.reverse()  # Reverse the path to get the correct order
-        return path, history, (1000-len(path))*health
+        # score = round((2*(1/len(path)))*(1*health))
+        score = round(((1000-len(path))*1)*(health*0.5))
+        return path, history, score, health
     else:
-        return [], history, 0
+        return [], history, 0, 0
 
 def backtrack(maze, x, y, path, health, history):
     if maze[y][x] == 99:
@@ -36,19 +39,25 @@ def backtrack(maze, x, y, path, health, history):
         maze[y][x] = 8
         health -= 1
 
-    possible_moves = get_possible_moves(maze, x, y, health)
+    possible_moves = getPossibleMoves(maze, x, y, health)
     random.shuffle(possible_moves)
+
     for move in possible_moves:
         new_x = x + move[0]
         new_y = y + move[1]
         history.append(copy.deepcopy(maze))
-        isValid, health = backtrack(maze, new_x, new_y, path, health, history)
+        isValid, newHealth = backtrack(maze, new_x, new_y, path, health, history)
         if isValid:
             path.append(move)
+            health = newHealth
             return True, health
+        
+    if maze[y][x] == 8:
+        health += 1  # Increment health if backtracking from a previously visited square with health penalty
+
     return False, health
 
-def get_possible_moves(maze, x, y, health):
+def getPossibleMoves(maze, x, y, health):
     moves = []
     if x > 0 and (maze[y][x-1] == 0 or (maze[y][x-1] == 6 and health-1>=0) or maze[y][x-1] == 99):
         moves.append((-1, 0))
