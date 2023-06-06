@@ -1,9 +1,9 @@
 # Proyek alpro2_final1
 
 ## Peran:
+- Fit: Gambaran Umum Projek
 - Ivan: Map Generation
 - Greg: Pathfinding
-- Fit: Gambaran Umum Projek
 - Hansen: Visualisasi
 
 ## Gambaran Umum
