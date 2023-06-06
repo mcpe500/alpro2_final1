@@ -19,7 +19,8 @@ main.py
 def createEmptyMap(width, height):
     return [[1] * width for _ in range(height)]
 ```
-Ini adalah fungsi untuk random map dengan membuat map yang berisi boolean, untuk mengecek apakah sudah di visit atau belum. Fungsi ini akan memulai pergerakan secara random dari koordinat x dan y yang diberikan sebagai parameter. Selanjutnya, fungsi ini akan mengacak urutan gerakan dari pilihan Kanan, Kiri, Atas, dan Bawah. Setelah itu, fungsi akan mengecek apakah tempat tersebut telah dikunjungi atau belum. Jika tempat tersebut belum dikunjungi, fungsi akan mengubah nilai tempat tersebut menjadi 0, menunjukkan bahwa tempat tersebut telah dikunjungi. Lalu, fungsi akan memeriksa dinding di sekitar tempat tersebut dan mengubah nilai dinding yang sesuai. Terakhir, fungsi akan mengembalikan map yang telah diacak:
+
+- Ini adalah fungsi untuk random map dengan membuat map yang berisi boolean, untuk mengecek apakah sudah di visit atau belum. Fungsi ini akan memulai pergerakan secara random dari koordinat x dan y yang diberikan sebagai parameter. Selanjutnya, fungsi ini akan mengacak urutan gerakan dari pilihan Kanan, Kiri, Atas, dan Bawah. Setelah itu, fungsi akan mengecek apakah tempat tersebut telah dikunjungi atau belum. Jika tempat tersebut belum dikunjungi, fungsi akan mengubah nilai tempat tersebut menjadi 0, menunjukkan bahwa tempat tersebut telah dikunjungi. Lalu, fungsi akan memeriksa dinding di sekitar tempat tersebut dan mengubah nilai dinding yang sesuai. Terakhir, fungsi akan mengembalikan map yang telah diacak:
 ```python
 def randomMap(maze, x, y,visited=None):
     maze[y][x] = 0
@@ -56,7 +57,7 @@ def randomMap(maze, x, y,visited=None):
     return maze
 ```
 
-Ini adalah fungsi untuk mengecek apakah bisa menaruh lava pada posisi x dan y dimana posisi x dan y adalah tembok dan juga memiliki jalan yang dapat dilewati lebih dari 2 atau bukan merupakan jalan buntu
+- Ini adalah fungsi untuk mengecek apakah bisa menaruh lava pada posisi x dan y dimana posisi x dan y adalah tembok dan juga memiliki jalan yang dapat dilewati lebih dari 2 atau bukan merupakan jalan buntu
 ```python
 def validLava(maze, x, y):
     empty = 0
