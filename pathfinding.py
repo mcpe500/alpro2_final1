@@ -4,9 +4,28 @@ import numpy as np
 
 def findstart(maze):
     for i in range(len(maze)):
+        if isinstance(maze[i], np.int32):
+            return i, np.where(maze[i] == 10)
         for j in range(len(maze[i])):
             if maze[i][j] == 10:
                 return i, j
+            
+# import numpy as np
+
+# def findstart(maze):
+#     if isinstance(maze, np.int32):
+#         return np.where(maze == 10)
+#     elif isinstance(maze[0], np.ndarray) and isinstance(maze[0][0], np.int32):
+#         return np.where(maze == 10)
+#     else:
+#         for i in range(len(maze)):
+#             for j in range(len(maze[i])):
+#                 if maze[i][j] == 10:
+#                     return i, j
+
+
+
+
 def findend(maze):
     for i in range(len(maze)):
         for j in range(len(maze[i])):
@@ -24,11 +43,11 @@ def findpath(maze,health, x=None, y=None, history=None):
     if isValid:
         path.reverse()  # Reverse the path to get the correct order
         # score = round((2*(1/len(path)))*(1*health))
-        path = np.array(path)
+        # path = np.array(path)
         score = round(((1000-len(path))*1)*(health*0.5))
         return path, history, score, health
     else:
-        return np.array([]), history, 0, 0
+        return [], history, 0, 0
 
 def backtrack(maze, x, y, path, health, history):
     if maze[y][x] == 99:
@@ -70,18 +89,20 @@ def getPossibleMoves(maze, x, y, health):
         moves.append((0, 1))
     return moves
 
-def finalMaze(maze,path):
-    # print(path)
-    sY,sX = findstart(maze)
-    for index in range(len(path)):
-        pX,pY = path[index]
-        if maze[sY+pY][sX+pX] == 3:
-            maze[sY+pY][sX+pX] = 4
+def finalMaze(maze, path):
+    sY, sX = findstart(maze)
+    print(path)
+    path_length = len(path) 
+    for index in range(path_length):
+        pX, pY = path[index]
+        if maze[sY + pY][sX + pX] == 3:
+            maze[sY + pY][sX + pX] = 4
             sY += pY
             sX += pX
-        elif maze[sY+pY][sX+pX] == 8:
-            maze[sY+pY][sX+pX] = 9
+        elif maze[sY + pY][sX + pX] == 8:
+            maze[sY + pY][sX + pX] = 9
             sY += pY
             sX += pX
     return maze
+
     

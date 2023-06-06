@@ -1,42 +1,50 @@
-import concurrent.futures
 import read_file
 import generateMap
 import pathfinding
 import copy
+import numpy as np
+from concurrent.futures import ThreadPoolExecutor
 
-def calculate_path(temp_map):
-    temp = copy.deepcopy(temp_map)
-    tempPath, tempHist, tempSc, tempHp = pathfinding.findpath(temp)
-    return (tempSc, tempPath, tempHist, tempHp)
+def process_map(map, health, bestScore, bestMap, paths):
+    temp = copy.deepcopy(map)
+    tempPath, tempHist, tempSc, tempHp = pathfinding.findpath(temp, health)
+    if tempSc > bestScore:
+        bestScore = tempSc
+        paths = np.array([tempPath, tempHist, tempSc, tempHp], dtype=object)
+        bestMap = temp
+    return bestScore, bestMap, paths
 
 map, state = read_file.readMap("map")
-map = generateMap.randomMap(map, 0, 0)
 
 if not state:
+    map = generateMap.randomMap(map, 0, 0)
     map = generateMap.newMaze(map, 15, 3)
-paths = [0, 0, 0, 0]
+paths = np.array([0, 0, 0, 0], dtype=object)
+
+health = 10
 
 bestMap = copy.deepcopy(map)
 bestScore = 0
-num_threads = 8  # Sesuaikan dengan jumlah CPU core yang dimiliki (i9-11900H memiliki 8 core)
 
-with concurrent.futures.ThreadPoolExecutor(max_workers=num_threads) as executor:
+with ThreadPoolExecutor(max_workers=8) as executor:
     futures = []
-    for _ in range(1000):
-        temp = copy.deepcopy(map)
-        future = executor.submit(calculate_path, temp)
+    for i in range(1000):
+        future = executor.submit(process_map, map, health, bestScore, bestMap, paths)
         futures.append(future)
+        
+    for future in futures:
+        tempBestScore, tempBestMap, tempPaths = future.result()
 
-    for future in concurrent.futures.as_completed(futures):
-        tempScore, tempPath, tempHist, tempHp = future.result()
-        if tempScore > bestScore:
-            print(tempScore)
-            bestScore = tempScore
-            paths = [tempPath, tempHist, tempScore, tempHp]
-            bestMap = copy.deepcopy(temp)
+        if tempBestScore > bestScore:
+            bestScore = tempBestScore
+            paths = tempPaths
+            bestMap = tempBestMap
+    # print(futures[0])
 
+map = bestMap
 path, history, score, health = paths
-print(score)
 
-map = pathfinding.finalMaze(bestMap, path)
-history.append(map)
+map = pathfinding.finalMaze(map, path)
+history.append(np.array(map))
+import visualize
+visualize.animate(history, health, score)

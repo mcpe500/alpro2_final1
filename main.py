@@ -19,18 +19,13 @@ for i in range(1000):
     temp = copy.deepcopy(map)
     tempPath, tempHist, tempSc, tempHp = pathfinding.findpath(temp,health)
     if tempSc>bestScore:
-        print("percobaan ke",i)
         print(tempSc)
         bestScore = tempSc
         paths = np.array([tempPath, tempHist, tempSc, tempHp], dtype=object)
-        # print(paths)
-        # paths.append([tempPath, tempHist, tempSc, tempHp])
         bestMap = temp
 map = bestMap
-# path, history, score, health = paths[len(paths)-1]
 path, history, score, health = paths
 print(score)
-# print(path)
 map = pathfinding.finalMaze(map,path)
 np.array(history.append(np.array(map)))
 import visualize
