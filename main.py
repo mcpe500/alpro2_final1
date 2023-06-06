@@ -27,10 +27,5 @@ print(score)
 
 map = pathfinding.finalMaze(map,path)
 history.append(map)
-# for i in map:
-#     print(i)
-
-# for i in history:
-#     print(i)
 import visualize
 visualize.animate(history, health, score)

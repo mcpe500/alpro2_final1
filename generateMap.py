@@ -83,6 +83,19 @@ def randomMap(maze, x, y,visited=None):
                 randomMap(maze, next_moveX, next_moveY,visited)
     return maze
     
+def validLava(maze, x, y):
+    empty = 0
+    if x-1 >= 0 and maze[y][x-1] == 0:
+        empty += 1
+    if x+1 < len(maze[0]) and maze[y][x+1] == 0:
+        empty += 1
+    if y-1 >= 0 and maze[y-1][x] == 0:
+        empty += 1
+    if y+1 < len(maze) and maze[y+1][x] == 0:
+        empty += 1
+    return (empty >= 2) and maze[y][x] == 1
+
+
 def newMaze(maze, trapCount, lavaCount):
     nMaze = []
     for i in range(len(maze)):
@@ -108,23 +121,11 @@ def newMaze(maze, trapCount, lavaCount):
             y,x = random.randint(0,len(maze)-1),random.randint(0,len(maze[0])-1)
         nMaze[y][x] = 6
 
-    # def validLava(maze, x, y):
-    #     empty = 0
-    #     if x-1>=0 and maze[y][x-1] == 0:
-    #         empty += 1
-    #     if x+1<len(maze[0]) and maze[y][x+1] == 0:
-    #         empty += 1
-    #     if y-1>=0 and maze[y-1][x] == 0:
-    #         empty += 1
-    #     if y+1<len(maze) and maze[y+1][x] == 0:
-    #         empty += 1
-    #     return ((empty>=2) and maze[y][x] == 1)
-
-    # for i in range(0, lavaCount):
-    #     y,x = random.randint(0,len(maze)-1),random.randint(0,len(maze[0])-1)
-    #     while not validLava(maze, x, y):
-    #         y,x = random.randint(0,len(maze)-1),random.randint(0,len(maze[0])-1)
-    #     nMaze[y][x] = 7
+    for i in range(0, lavaCount):
+        y,x = random.randint(0,len(maze)-1),random.randint(0,len(maze[0])-1)
+        while not validLava(maze, x, y):
+            y,x = random.randint(0,len(maze)-1),random.randint(0,len(maze[0])-1)
+        nMaze[y][x] = 7
 
     return nMaze
 
