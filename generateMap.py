@@ -6,7 +6,7 @@ import numpy as np
 sys.setrecursionlimit(100000)
 
 def createEmptyMap(width, height):
-    return np.ones((height, width), dtype=int)
+    return np.ones((height, width), dtype=np.int8)
 
 # def isAllVisited(visited):
 #     for i in visited:

@@ -15,12 +15,6 @@ turtle.addshape("pathed_beartrap.gif")
 turtle.addshape("bestpath_beartrap.gif")
 
 p = turtle.Turtle()
-
-def box(pen, size):
-    pen.shape("Wall.gif")
-    pen.shapesize(0.01)  # adjust the size of the turtle shape based on the size of the maze cell
-    pen.stamp()
-
 def drawMaze(maze, size, health, score):
     start_x = -((len(maze[0]) * size) / 2)
     start_y = (len(maze) * size) / 2
@@ -65,7 +59,6 @@ def drawMaze(maze, size, health, score):
                 # print("exit")
                 p.shape("exit.gif")
             
-            p.shapesize(stretch_wid=size/20, stretch_len=size/20)
             p.stamp()
             p.forward(size)
 
