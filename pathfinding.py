@@ -37,11 +37,11 @@ def findpath(maze,health, x=None, y=None, history=None):
         y, x = findstart(maze)
     if history is None:
         history = []
-    path = []  # Variable to store the final path
+    path = []
 
     isValid, health = backtrack(maze, x, y, path, health, history)
     if isValid:
-        path.reverse()  # Reverse the path to get the correct order
+        path.reverse()
         # score = round((2*(1/len(path)))*(1*health))
         # path = np.array(path)
         score = round(((1000-len(path))*1)*(health*0.5))
@@ -54,7 +54,7 @@ def backtrack(maze, x, y, path, health, history):
         return True, health
 
     if maze[y][x] == 0:
-        maze[y][x] = 3  # Mark the current square as visited
+        maze[y][x] = 3 
     elif maze[y][x] == 6:
         maze[y][x] = 8
         health -= 1
@@ -73,20 +73,21 @@ def backtrack(maze, x, y, path, health, history):
             return True, health
         
     if maze[y][x] == 8:
-        health += 1  # Increment health if backtracking from a previously visited square with health penalty
+        health += 1 
 
     return False, health
 
 def getPossibleMoves(maze, x, y, health):
     moves = []
-    if x > 0 and (maze[y][x-1] == 0 or (maze[y][x-1] == 6 and health-1>=0) or maze[y][x-1] == 99):
-        moves.append((-1, 0))
-    if x < len(maze[0]) - 1 and (maze[y][x+1] == 0 or (maze[y][x+1] == 6 and health-1>=0) or maze[y][x+1] == 99):
-        moves.append((1, 0))
-    if y > 0 and (maze[y-1][x] == 0 or (maze[y-1][x] == 6 and health-1>=0) or maze[y-1][x] == 99):
-        moves.append((0, -1))
-    if y < len(maze) - 1 and (maze[y+1][x] == 0 or (maze[y+1][x] == 6 and health-1>=0) or maze[y+1][x] == 99):
-        moves.append((0, 1))
+    maze = np.array(maze, dtype=np.int8)
+    if x > 0 and (maze[y, x-1] == 0 or (maze[y, x-1] == 6 and health-1 >= 0) or maze[y, x-1] == 99):
+        moves.append(np.array([-1, 0], dtype=np.int8))
+    if x < maze.shape[1] - 1 and (maze[y, x+1] == 0 or (maze[y, x+1] == 6 and health-1 >= 0) or maze[y, x+1] == 99):
+        moves.append(np.array([1, 0], dtype=np.int8))
+    if y > 0 and (maze[y-1, x] == 0 or (maze[y-1, x] == 6 and health-1 >= 0) or maze[y-1, x] == 99):
+        moves.append(np.array([0, -1], dtype=np.int8))
+    if y < maze.shape[0] - 1 and (maze[y+1, x] == 0 or (maze[y+1, x] == 6 and health-1 >= 0) or maze[y+1, x] == 99):
+        moves.append(np.array([0, 1], dtype=np.int8))
     return moves
 
 def finalMaze(maze, path):
