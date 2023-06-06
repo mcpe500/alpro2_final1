@@ -71,6 +71,42 @@ def validLava(maze, x, y):
         empty += 1
     return (empty >= 2) and maze[y][x] == 1
 ```
+
+Ini adalah fungsi untuk set up maze dengan mengisi maze dengan posisi start, lalu memberikan berapa trap, dan juga berapa lava. Pertama membuat copy dari maze, kemudian membersihkan bagian kiri atas pada posisi awal 3 * 3 dari koordinat 1,1 sampai 4,4. Lalu menempatkan start pada posisi x,y yang 1,1. kemudian akan merandom koordinat y,x dari end position, lalu akan 
+```python
+def newMaze(maze, trapCount, lavaCount):
+    nMaze = []
+    for i in range(len(maze)):
+        nMaze.append([])
+        for j in range(len(maze[i])):
+            nMaze[i].append(maze[i][j])
+
+    for i in range(1, 4):
+        for j in range(1, 4):
+            nMaze[i][j] = 0
+    nMaze[1][1] = 10
+    y,x = random.randint(len(maze)//2,len(maze)-1),random.randint(len(maze[0])//2,len(maze[0])-1)
+    while True:
+        if nMaze[y][x] == 0:
+            nMaze[y][x] = 99
+            break
+        else:
+            y,x = random.randint(len(maze)//2,len(maze)-1),random.randint(len(maze[0])//2,len(maze[0])-1)
+
+    for i in range(0, trapCount):
+        y,x = random.randint(0,len(maze)-1),random.randint(0,len(maze[0])-1)
+        while nMaze[y][x] != 0:
+            y,x = random.randint(0,len(maze)-1),random.randint(0,len(maze[0])-1)
+        nMaze[y][x] = 6
+
+    for i in range(0, lavaCount):
+        y,x = random.randint(0,len(maze)-1),random.randint(0,len(maze[0])-1)
+        while not validLava(maze, x, y):
+            y,x = random.randint(0,len(maze)-1),random.randint(0,len(maze[0])-1)
+        nMaze[y][x] = 7
+
+    return nMaze
+```
 ## Pathfinding
 
 ## Visualisasi

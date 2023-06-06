@@ -1,5 +1,6 @@
 import copy
 import random
+import numpy as np
 
 def findstart(maze):
     for i in range(len(maze)):
@@ -12,22 +13,22 @@ def findend(maze):
             if maze[i][j] == 99:
                 return i, j
 
-def findpath(maze, x=None, y=None, history=None):
+def findpath(maze,health, x=None, y=None, history=None):
     if x is None and y is None:
         y, x = findstart(maze)
     if history is None:
         history = []
     path = []  # Variable to store the final path
-    health = 0
 
-    isValid, health = backtrack(maze, x, y, path, 10, history)
+    isValid, health = backtrack(maze, x, y, path, health, history)
     if isValid:
         path.reverse()  # Reverse the path to get the correct order
         # score = round((2*(1/len(path)))*(1*health))
+        path = np.array(path)
         score = round(((1000-len(path))*1)*(health*0.5))
         return path, history, score, health
     else:
-        return [], history, 0, 0
+        return np.array([]), history, 0, 0
 
 def backtrack(maze, x, y, path, health, history):
     if maze[y][x] == 99:
@@ -48,7 +49,7 @@ def backtrack(maze, x, y, path, health, history):
         history.append(copy.deepcopy(maze))
         isValid, newHealth = backtrack(maze, new_x, new_y, path, health, history)
         if isValid:
-            path.append(move)
+            path.append(np.array(move))
             health = newHealth
             return True, health
         

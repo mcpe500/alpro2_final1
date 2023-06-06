@@ -1,10 +1,12 @@
 import random
 import sys
+import copy
+import numpy as np
 
 sys.setrecursionlimit(100000)
 
 def createEmptyMap(width, height):
-    return [[1] * width for _ in range(height)]
+    return np.ones((height, width), dtype=int)
 
 # def isAllVisited(visited):
 #     for i in visited:
@@ -51,14 +53,16 @@ def createEmptyMap(width, height):
 
 def randomMap(maze, x, y,visited=None):
     maze[y][x] = 0
-    if visited == None:
-        visited = [[False] * len(maze[0]) for _ in range(len(maze))]
-    moves = [(0, 1), (1, 0), (0, -1), (-1, 0)]
-    cover = [
-        [(1, 0), (-1, 0)],
-        [(0, 1), (0, -1)],
-    ]
-    random.shuffle(moves)
+    if visited is None:
+        visited = np.array([[False] * len(maze[0]) for _ in range(len(maze))], dtype=np.bool_)
+    # moves = [(0, 1), (1, 0), (0, -1), (-1, 0)]
+    # cover = [
+    #     [(1, 0), (-1, 0)],
+    #     [(0, 1), (0, -1)],
+    # ]
+    moves = np.array([[0, 1], [1, 0], [0, -1], [-1, 0]], dtype=np.int8)
+    cover = np.array([[[1, 0], [-1, 0]], [[0, 1], [0, -1]]], dtype=np.int8)
+    np.random.shuffle(moves)
     for moveX, moveY in moves:
         next_moveX = x + moveX
         next_moveY = y + moveY
@@ -66,13 +70,13 @@ def randomMap(maze, x, y,visited=None):
             if maze[next_moveY][next_moveX] == 1 and not visited[next_moveY][next_moveX]:
                 maze[y+moveY][x+moveX] = 0
                 wall = []
-                if(moveX,moveY) == moves[0]:
+                if np.array_equal([moveX,moveY],moves[0]):
                     wall = cover[0]
-                elif(moveX,moveY) == moves[1]:
+                elif np.array_equal([moveX,moveY],moves[1]):
                     wall = cover[1]
-                elif(moveX,moveY) == moves[2]:
+                elif np.array_equal([moveX,moveY],moves[2]):
                     wall = cover[0]
-                elif(moveX,moveY) == moves[3]:
+                elif np.array_equal([moveX,moveY],moves[3]):
                     wall = cover[1]
                 wall1X,wall1Y = wall[0]
                 wall2X,wall2Y = wall[1]
@@ -97,36 +101,31 @@ def validLava(maze, x, y):
 
 
 def newMaze(maze, trapCount, lavaCount):
-    nMaze = []
-    for i in range(len(maze)):
-        nMaze.append([])
-        for j in range(len(maze[i])):
-            nMaze[i].append(maze[i][j])
-
+    nMaze = copy.deepcopy(maze)
+    # print(nMaze)
     for i in range(1, 4):
         for j in range(1, 4):
             nMaze[i][j] = 0
     nMaze[1][1] = 10
-    y,x = random.randint(len(maze)//2,len(maze)-1),random.randint(len(maze[0])//2,len(maze[0])-1)
+    y, x = random.randint(len(maze) // 2, len(maze) - 1), random.randint(len(maze[0]) // 2, len(maze[0]) - 1)
     while True:
         if nMaze[y][x] == 0:
             nMaze[y][x] = 99
             break
         else:
-            y,x = random.randint(len(maze)//2,len(maze)-1),random.randint(len(maze[0])//2,len(maze[0])-1)
+            y, x = random.randint(len(maze) // 2, len(maze) - 1), random.randint(len(maze[0]) // 2, len(maze[0]) - 1)
 
     for i in range(0, trapCount):
-        y,x = random.randint(0,len(maze)-1),random.randint(0,len(maze[0])-1)
+        y, x = random.randint(0, len(maze) - 1), random.randint(0, len(maze[0]) - 1)
         while nMaze[y][x] != 0:
-            y,x = random.randint(0,len(maze)-1),random.randint(0,len(maze[0])-1)
+            y, x = random.randint(0, len(maze) - 1), random.randint(0, len(maze[0]) - 1)
         nMaze[y][x] = 6
 
     for i in range(0, lavaCount):
-        y,x = random.randint(0,len(maze)-1),random.randint(0,len(maze[0])-1)
+        y, x = random.randint(0, len(maze) - 1), random.randint(0, len(maze[0]) - 1)
         while not validLava(maze, x, y):
-            y,x = random.randint(0,len(maze)-1),random.randint(0,len(maze[0])-1)
+            y, x = random.randint(0, len(maze) - 1), random.randint(0, len(maze[0]) - 1)
         nMaze[y][x] = 7
-
     return nMaze
 
 # def randomMap(maze):
